@@ -1,42 +1,3 @@
-"""
-import pandas as pd
-import matplotlib.pyplot as plt
-import requests
-from io import StringIO
-
-# Загрузка
-url = "https://raw.githubusercontent.com/dm-fedorov/python_basic/master/data/opendata.stat"
-df = pd.read_csv(StringIO(requests.get(url).text))
-
-# Обработка даты
-df['date'] = pd.to_datetime(df['date'])
-df['year'] = df['date'].dt.year
-
-# Фильтрация
-filtered = df[(df['region'] == 'Забайкальский край') & (df['year'] == 2018)]
-
-if not filtered.empty:
-    # Среднее значение
-    avg = filtered['value'].mean()
-    print(f"Среднее значение: {avg:.2f}")
-    
-    # График
-    filtered = filtered.sort_values('date')
-    plt.figure(figsize=(10, 6))
-    plt.plot(filtered['date'], filtered['value'], marker='o')
-    for date, value in zip(filtered['date'], filtered['value']):
-        date_str = date.strftime('%Y-%m-%d')
-        print(f"{date_str:<12} | {value:>10.2f}")
-    plt.title(f'{filtered["name"].iloc[0]} в Забайкальском крае, 2018')
-    plt.xlabel('Дата')
-    plt.ylabel('Значение')
-    plt.grid(True)
-    plt.tight_layout()
-    plt.savefig('graph.png')
-    plt.show()
-else:
-    print("Данные не найдены!")
-"""
 import pandas as pd
 import matplotlib.pyplot as plt
 import requests
@@ -161,4 +122,5 @@ else:
         print(f"... и еще {len(unique_indicators) - 20} показателей")
     
     print("-" * 50)
+
     print("\nСовет: Попробуйте найти данные по другим ключевым словам")
